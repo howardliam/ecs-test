@@ -15,6 +15,8 @@ std::vector<char> load_shader(const char *file_name) {
 
     file.close();
 
+    buffer.push_back('\0');
+
     return buffer;
 }
 

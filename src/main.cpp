@@ -1,13 +1,17 @@
+#include <SDL2/SDL_events.h>
+#include <SDL2/SDL_timer.h>
+#include <SDL2/SDL_video.h>
 #include <cstdlib>
 
-#include <GL/glew.h>
+#include "gl.h"
 
 #include "shader.hpp"
 #include "window.hpp"
 
 int main() {
     Window window{800, 600, "Test Window"};
-    glewInit();
+
+
 
     ShaderProgram shader{"assets/shaders/shader.vert", "assets/shaders/shader.frag"};
 
@@ -35,10 +39,11 @@ int main() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    while(!window.should_close()) {
-        window.begin();
 
+    while(window.is_running()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        window.begin();
 
         shader.bind();
 

@@ -1,24 +1,31 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include <SDL2/SDL_video.h>
 #include <string>
 
-#include <GLFW/glfw3.h>
+#include <SDL2/SDL.h>
 
 class Window {
 public:
     Window(int width, int height, const char *title);
     ~Window();
 
-    bool should_close();
+    bool is_running();
     void begin();
     void end();
+
+    SDL_Window *get_window();
+    SDL_GLContext get_context();
 private:
     int width;
     int height;
     std::string title;
 
-    GLFWwindow *window;
+    bool running{true};
+
+    SDL_Window *window;
+    SDL_GLContext context;
 };
 
 #endif
