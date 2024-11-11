@@ -1,17 +1,13 @@
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_timer.h>
-#include <SDL2/SDL_video.h>
 #include <cstdlib>
 
-#include "gl.h"
+#include "glad/gl.h"
 
+#include "imgui/imgui.h"
 #include "shader.hpp"
 #include "window.hpp"
 
 int main() {
-    Window window{800, 600, "Test Window"};
-
-
+    Window window{1600, 900, "Test Window"};
 
     ShaderProgram shader{"assets/shaders/shader.vert", "assets/shaders/shader.frag"};
 
@@ -43,7 +39,12 @@ int main() {
     while(window.is_running()) {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        window.poll_events();
+
         window.begin();
+
+        bool open = true;
+        ImGui::ShowDemoWindow(&open);
 
         shader.bind();
 

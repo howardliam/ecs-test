@@ -1,7 +1,7 @@
 #ifndef SHADER_H
 #define SHADER_H
 
-#include "gl.h"
+#include "glad/gl.h"
 
 class ShaderProgram {
 public:
