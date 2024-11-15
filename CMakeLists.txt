@@ -10,6 +10,16 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 
+set(PROJ_SRC
+    src/main.cpp
+    src/window.hpp
+    src/window.cpp
+    src/shader.hpp
+    src/shader.cpp
+    src/model.hpp
+    src/model.cpp
+)
+
 set(GLAD_SRC
     src/glad/gl.h
     src/glad/gl.c
@@ -35,14 +45,7 @@ set(IMGUI_SRC
 )
 
 add_executable(${PROJ_NAME}
-    src/main.cpp
-    src/window.hpp
-    src/window.cpp
-    src/shader.hpp
-    src/shader.cpp
-    src/model.hpp
-    src/model.cpp
-
+    ${PROJ_SRC}
     ${GLAD_SRC}
     ${IMGUI_SRC}
 )
