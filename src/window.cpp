@@ -49,6 +49,8 @@ void Window::poll_events() {
             if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
                 open = false;
                 break;
+            } else if (event.key.scancode == SDL_SCANCODE_F3) {
+                show_debug_info = !show_debug_info;
             }
         }
     }

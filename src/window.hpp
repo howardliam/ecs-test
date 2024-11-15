@@ -30,6 +30,8 @@ public:
 
     float get_frame_time() { return frame_time; }
     float get_fps() { return 1.0f / frame_time; }
+
+    bool display_debug_info() { return show_debug_info; }
 private:
     int width;
     int height;
@@ -42,6 +44,8 @@ private:
 
     std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
     float frame_time;
+
+    bool show_debug_info{true};
 
     void initialise_sdl();
     void set_attributes();
