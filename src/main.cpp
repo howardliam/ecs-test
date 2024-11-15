@@ -38,12 +38,22 @@ int main() {
     glm::mat4 model(1.0f);
     model = glm::translate(model, {0.0f, 0.0f, -5.0f});
 
+    bool show_debug = false;
     while(window.is_open()) {
         window.poll_events();
         window.begin();
 
-        {
-            ImGui::Begin("Debug");
+        // SDL_Event event;
+        // while (SDL_PollEvent(&event)) {
+        //     if (event.type == SDL_EVENT_KEY_DOWN) {
+        //         if (event.key.scancode == SDL_SCANCODE_F3) {
+        //             show_debug = !show_debug;
+        //         }
+        //     }
+        // }
+
+        if (show_debug) {
+            ImGui::Begin("Debug", nullptr, ImGuiWindowFlags_NoCollapse);
             ImGui::Text("FPS: %f", window.get_fps());
             ImGui::Text("Frame time: %f", window.get_frame_time());
             ImGui::End();

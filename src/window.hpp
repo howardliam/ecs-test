@@ -15,18 +15,21 @@ public:
     void begin(); // Prepare for rendering (mainly imgui)
     void end(); // End render
 
-    int get_width();
-    int get_height();
-    float get_aspect_ratio();
-    void set_title(std::string new_title);
+    int get_width() { return width; }
+    int get_height() { return height; }
+    float get_aspect_ratio() { return static_cast<float>(width) / height; }
+    void set_title(std::string new_title) {
+        title = new_title;
+        SDL_SetWindowTitle(window, title.c_str());
+    }
 
-    bool is_open();
+    bool is_open() { return open; }
 
-    SDL_Window *get_window();
-    SDL_GLContext get_context();
+    SDL_Window *get_window() { return window; }
+    SDL_GLContext get_context() { return context; }
 
-    float get_frame_time();
-    float get_fps();
+    float get_frame_time() { return frame_time; }
+    float get_fps() { return 1.0f / frame_time; }
 private:
     int width;
     int height;

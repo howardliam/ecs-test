@@ -1,5 +1,7 @@
 #include "window.hpp"
 
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_scancode.h>
 #include <cstdlib>
 #include <iostream>
 
@@ -43,6 +45,11 @@ void Window::poll_events() {
             glViewport(0, 0, newWidth, newHeight);
             width = newWidth;
             height = newHeight;
+        } else if (event.type == SDL_EVENT_KEY_DOWN) {
+            if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
+                open = false;
+                break;
+            }
         }
     }
 }
@@ -63,43 +70,6 @@ void Window::end() {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(window);
-}
-
-int Window::get_width() {
-    return width;
-}
-
-int Window::get_height() {
-    return height;
-}
-
-float Window::get_aspect_ratio() {
-    return static_cast<float>(width) / height;
-}
-
-void Window::set_title(std::string new_title) {
-    title = new_title;
-    SDL_SetWindowTitle(window, title.c_str());
-}
-
-bool Window::is_open() {
-    return open;
-}
-
-SDL_Window *Window::get_window() {
-    return window;
-}
-
-SDL_GLContext Window::get_context() {
-    return context;
-}
-
-float Window::get_frame_time() {
-    return frame_time;
-}
-
-float Window::get_fps() {
-    return 1.0f / frame_time;
 }
 
 void Window::initialise_sdl() {
