@@ -41,6 +41,18 @@ void ShaderProgram::unbind() {
     glUseProgram(0);
 }
 
+void ShaderProgram::load_projection_matrix(glm::mat4 matrix) {
+    load_matrix(matrix, "projection_matrix");
+}
+
+void ShaderProgram::load_view_matrix(glm::mat4 matrix) {
+    load_matrix(matrix, "view_matrix");
+}
+
+void ShaderProgram::load_model_matrix(glm::mat4 matrix) {
+    load_matrix(matrix, "model_matrix");
+}
+
 GLuint ShaderProgram::create_shader(GLenum shader_type, const char *path) {
     auto code = load_shader(path);
     auto data = code.data();
@@ -76,4 +88,11 @@ GLuint ShaderProgram::create_program() {
     glDetachShader(program, fragment_shader);
 
     return program;
+}
+
+void ShaderProgram::load_matrix(glm::mat4 matrix, const char *uniform_name) {
+    bind();
+    GLuint location = glGetUniformLocation(shader_program, uniform_name);
+    glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+    unbind();
 }
