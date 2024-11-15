@@ -38,7 +38,6 @@ int main() {
     glm::mat4 model(1.0f);
     model = glm::translate(model, {0.0f, 0.0f, -5.0f});
 
-    auto currentTime = std::chrono::high_resolution_clock::now();
     while(window.is_open()) {
         window.poll_events();
         window.begin();
