@@ -46,6 +46,7 @@ int main() {
         {
             ImGui::Begin("Debug");
             ImGui::Text("FPS: %f", window.get_fps());
+            ImGui::Text("Frame time: %f", window.get_frame_time());
             ImGui::End();
         }
 
