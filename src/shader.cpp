@@ -8,7 +8,7 @@ std::vector<char> load_shader(const char *file_name) {
     std::ifstream file{file_name, std::ios::ate};
 
     size_t file_size = file.tellg();
-    std::vector<char> buffer(file_size);
+    std::vector<char> buffer(file_size + 1);
 
     file.seekg(0);
     file.read(buffer.data(), file_size);
