@@ -17,6 +17,7 @@ struct Vertex {
 class Model {
 public:
     Model(std::vector<Vertex> &vertices, std::vector<GLushort> &indices, ShaderProgram &shader);
+    ~Model();
 
     void draw();
 private:

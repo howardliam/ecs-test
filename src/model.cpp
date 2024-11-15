@@ -5,6 +5,19 @@ Model::Model(std::vector<Vertex> &vertices, std::vector<GLushort> &indices, Shad
     prepare();
 }
 
+Model::~Model() {
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    glDeleteVertexArrays(1, &vao);
+    glDeleteBuffers(1, &vbo);
+    glDeleteBuffers(1, &ebo);
+
+    vertices.clear();
+    indices.clear();
+}
+
 void Model::draw() {
     shader.bind();
     glBindVertexArray(vao);
