@@ -38,6 +38,8 @@ void Window::poll_events() {
             int newWidth = event.window.data1;
             int newHeight = event.window.data2;
             glViewport(0, 0, newWidth, newHeight);
+            width = newWidth;
+            height = newHeight;
         }
     }
 }
@@ -67,6 +69,18 @@ SDL_Window *Window::get_window() {
 
 SDL_GLContext Window::get_context() {
     return context;
+}
+
+float Window::get_aspect_ratio() {
+    return static_cast<float>(width) / height;
+}
+
+int Window::get_width() {
+    return width;
+}
+
+int Window::get_height() {
+    return height;
 }
 
 void Window::initialise_sdl() {

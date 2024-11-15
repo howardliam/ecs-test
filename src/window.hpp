@@ -18,6 +18,10 @@ public:
     bool is_open();
     SDL_Window *get_window();
     SDL_GLContext get_context();
+
+    float get_aspect_ratio();
+    int get_width();
+    int get_height();
 private:
     int width;
     int height;

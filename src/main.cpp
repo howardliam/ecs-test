@@ -1,4 +1,6 @@
 #include <cstdlib>
+#include <glm/trigonometric.hpp>
+#include <iostream>
 
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
@@ -32,21 +34,18 @@ int main() {
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 1.7778f, 0.01f, 100.0f);
-    shader.load_projection_matrix(projection);
-
     glm::mat4 model(1.0f);
-    model = glm::translate(model, {0.0f, 0.0f, -10.0f});
-    shader.load_model_matrix(model);
+    model = glm::translate(model, {0.0f, 0.0f, -5.0f});
 
-    bool open = false;
     while(window.is_open()) {
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), window.get_aspect_ratio(), 0.01f, 100.0f);
+        shader.load_projection_matrix(projection);
+
+        model = glm::rotate(model, glm::radians(1.0f), {1.0f, 1.0f, 1.0f});
+        shader.load_model_matrix(model);
+
         window.poll_events();
         window.begin();
-
-
-
-        ImGui::ShowDemoWindow(&open);
 
         shape.draw();
 
