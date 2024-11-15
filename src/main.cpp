@@ -40,7 +40,7 @@ int main() {
     shader.load_model_matrix(model);
 
     bool open = false;
-    while(window.is_running()) {
+    while(window.is_open()) {
         window.poll_events();
         window.begin();
 

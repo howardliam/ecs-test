@@ -32,7 +32,7 @@ void Window::poll_events() {
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL2_ProcessEvent(&event);
         if (event.type == SDL_QUIT) {
-            running = false;
+            open = false;
             break;
         } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
             int newWidth = event.window.data1;
@@ -57,8 +57,8 @@ void Window::end() {
     SDL_GL_SwapWindow(window);
 }
 
-bool Window::is_running() {
-    return running;
+bool Window::is_open() {
+    return open;
 }
 
 SDL_Window *Window::get_window() {

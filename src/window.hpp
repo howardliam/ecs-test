@@ -15,7 +15,7 @@ public:
     void begin(); // Prepare for rendering (mainly imgui)
     void end(); // End render
 
-    bool is_running();
+    bool is_open();
     SDL_Window *get_window();
     SDL_GLContext get_context();
 private:
@@ -23,7 +23,7 @@ private:
     int height;
     std::string title;
 
-    bool running{true};
+    bool open{true};
 
     SDL_Window *window;
     SDL_GLContext context;
