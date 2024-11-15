@@ -43,11 +43,11 @@ int main() {
         window.poll_events();
         window.begin();
 
-        auto newTime = std::chrono::high_resolution_clock::now();
-        float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
-        currentTime = newTime;
-        float fps = 1.0f / frameTime;
-        window.set_title("FPS: " + std::to_string(fps));
+        {
+            ImGui::Begin("Debug");
+            ImGui::Text("FPS: %f", window.get_fps());
+            ImGui::End();
+        }
 
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), window.get_aspect_ratio(), 0.01f, 100.0f);
         shader.load_projection_matrix(projection);

@@ -16,6 +16,8 @@ Window::Window(int width, int height, const char *title) : width{width}, height{
     setup_window();
     setup_opengl();
     setup_imgui();
+
+    current_time = std::chrono::high_resolution_clock::now();
 }
 
 Window::~Window() {
@@ -52,12 +54,32 @@ void Window::begin() {
     ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
+    auto new_time = std::chrono::high_resolution_clock::now();
+    frame_time = std::chrono::duration<float, std::chrono::seconds::period>(new_time - current_time).count();
+    current_time = new_time;
 }
 
 void Window::end() {
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     SDL_GL_SwapWindow(window);
+}
+
+int Window::get_width() {
+    return width;
+}
+
+int Window::get_height() {
+    return height;
+}
+
+float Window::get_aspect_ratio() {
+    return static_cast<float>(width) / height;
+}
+
+void Window::set_title(std::string new_title) {
+    title = new_title;
+    SDL_SetWindowTitle(window, title.c_str());
 }
 
 bool Window::is_open() {
@@ -72,21 +94,12 @@ SDL_GLContext Window::get_context() {
     return context;
 }
 
-float Window::get_aspect_ratio() {
-    return static_cast<float>(width) / height;
+float Window::get_frame_time() {
+    return frame_time;
 }
 
-int Window::get_width() {
-    return width;
-}
-
-int Window::get_height() {
-    return height;
-}
-
-void Window::set_title(std::string new_title) {
-    title = new_title;
-    SDL_SetWindowTitle(window, title.c_str());
+float Window::get_fps() {
+    return 1.0f / frame_time;
 }
 
 void Window::initialise_sdl() {
