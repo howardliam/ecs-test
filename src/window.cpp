@@ -3,14 +3,11 @@
 #include <cstdlib>
 #include <iostream>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_events.h>
-#include <SDL2/SDL_video.h>
-#include <SDL2/SDL_error.h>
+#include <SDL3/SDL_video.h>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
-#include "imgui/imgui_impl_sdl2.h"
+#include "imgui/imgui_impl_sdl3.h"
 #include "imgui/imgui_impl_opengl3.h"
 
 Window::Window(int width, int height, const char *title) : width{width}, height{height}, title{title} {
@@ -22,7 +19,11 @@ Window::Window(int width, int height, const char *title) : width{width}, height{
 }
 
 Window::~Window() {
-    SDL_GL_DeleteContext(context);
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplSDL3_Shutdown();
+    ImGui::DestroyContext();
+
+    SDL_GL_DestroyContext(context);
     SDL_DestroyWindow(window);
     SDL_Quit();
 }
@@ -30,11 +31,11 @@ Window::~Window() {
 void Window::poll_events() {
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
-        ImGui_ImplSDL2_ProcessEvent(&event);
-        if (event.type == SDL_QUIT) {
+        ImGui_ImplSDL3_ProcessEvent(&event);
+        if (event.type == SDL_EVENT_QUIT) {
             open = false;
             break;
-        } else if (event.type == SDL_WINDOWEVENT && event.window.event == SDL_WINDOWEVENT_RESIZED) {
+        } else if (event.type == SDL_EVENT_WINDOW_RESIZED) {
             int newWidth = event.window.data1;
             int newHeight = event.window.data2;
             glViewport(0, 0, newWidth, newHeight);
@@ -48,7 +49,7 @@ void Window::begin() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     ImGui_ImplOpenGL3_NewFrame();
-    ImGui_ImplSDL2_NewFrame();
+    ImGui_ImplSDL3_NewFrame();
     ImGui::NewFrame();
 
 }
@@ -83,8 +84,13 @@ int Window::get_height() {
     return height;
 }
 
+void Window::set_title(std::string new_title) {
+    title = new_title;
+    SDL_SetWindowTitle(window, title.c_str());
+}
+
 void Window::initialise_sdl() {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+    if (!SDL_Init(SDL_INIT_VIDEO)) {
         auto err = SDL_GetError();
         std::cerr << "Failed to initialise SDL: " << err << "\n";
         exit(1);
@@ -106,14 +112,14 @@ void Window::set_attributes() {
 }
 
 void Window::setup_window() {
-    auto pos = SDL_WINDOWPOS_CENTERED;
-    auto flags = SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
-    window = SDL_CreateWindow(title.c_str(), pos, pos, width, height, flags);
+    auto flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+    window = SDL_CreateWindow(title.c_str(), width, height, flags);
     if (!window) {
         auto err = SDL_GetError();
         std::cerr << "Failed to create window: " << err << "\n";
         exit(1);
     }
+    SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
 }
 
 void Window::setup_opengl() {
@@ -139,6 +145,6 @@ void Window::setup_imgui() {
 
     ImGui::StyleColorsDark();
 
-    ImGui_ImplSDL2_InitForOpenGL(get_window(), get_context());
+    ImGui_ImplSDL3_InitForOpenGL(get_window(), get_context());
     ImGui_ImplOpenGL3_Init("#version 460 core");
 }

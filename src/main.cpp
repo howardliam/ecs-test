@@ -1,11 +1,12 @@
 #include <cstdlib>
-#include <glm/trigonometric.hpp>
 #include <iostream>
+#include <chrono>
 
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/trigonometric.hpp>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
@@ -37,15 +38,22 @@ int main() {
     glm::mat4 model(1.0f);
     model = glm::translate(model, {0.0f, 0.0f, -5.0f});
 
+    auto currentTime = std::chrono::high_resolution_clock::now();
     while(window.is_open()) {
+        window.poll_events();
+        window.begin();
+
+        auto newTime = std::chrono::high_resolution_clock::now();
+        float frameTime = std::chrono::duration<float, std::chrono::seconds::period>(newTime - currentTime).count();
+        currentTime = newTime;
+        float fps = 1.0f / frameTime;
+        window.set_title("FPS: " + std::to_string(fps));
+
         glm::mat4 projection = glm::perspective(glm::radians(45.0f), window.get_aspect_ratio(), 0.01f, 100.0f);
         shader.load_projection_matrix(projection);
 
         model = glm::rotate(model, glm::radians(1.0f), {1.0f, 1.0f, 1.0f});
         shader.load_model_matrix(model);
-
-        window.poll_events();
-        window.begin();
 
         shape.draw();
 

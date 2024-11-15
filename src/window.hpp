@@ -3,8 +3,7 @@
 
 #include <string>
 
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_video.h>
+#include <SDL3/SDL.h>
 
 class Window {
 public:
@@ -22,6 +21,8 @@ public:
     float get_aspect_ratio();
     int get_width();
     int get_height();
+
+    void set_title(std::string new_title);
 private:
     int width;
     int height;

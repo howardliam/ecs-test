@@ -6,7 +6,7 @@ set(PROJ_NAME ecs-test)
 
 project(${PROJ_NAME} VERSION 0.1.0 LANGUAGES C CXX)
 
-find_package(SDL2 REQUIRED)
+find_package(SDL3 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 
@@ -40,8 +40,8 @@ set(IMGUI_SRC
     src/imgui/imgui_impl_opengl3.cpp
     src/imgui/imgui_impl_opengl3.h
     src/imgui/imgui_impl_opengl3_loader.h
-    src/imgui/imgui_impl_sdl2.cpp
-    src/imgui/imgui_impl_sdl2.h
+    src/imgui/imgui_impl_sdl3.cpp
+    src/imgui/imgui_impl_sdl3.h
 )
 
 add_executable(${PROJ_NAME}
@@ -50,5 +50,5 @@ add_executable(${PROJ_NAME}
     ${IMGUI_SRC}
 )
 
-set(LIBS pthread SDL2 OpenGL glm)
+set(LIBS pthread SDL3::SDL3 OpenGL glm)
 target_link_libraries(${PROJ_NAME} ${LIBS})
