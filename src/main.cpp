@@ -28,15 +28,16 @@ int main() {
 
     bool open = false;
     while(window.is_running()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         window.poll_events();
-
         window.begin();
+
+
 
         ImGui::ShowDemoWindow(&open);
 
         shape.draw();
+
+
 
         window.end();
     }
