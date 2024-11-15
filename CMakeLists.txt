@@ -10,16 +10,12 @@ find_package(SDL2 REQUIRED)
 find_package(OpenGL REQUIRED)
 find_package(glm REQUIRED)
 
-add_executable(${PROJ_NAME}
+set(GLAD_SRC
     src/glad/gl.h
     src/glad/gl.c
-    src/main.cpp
-    src/window.hpp
-    src/window.cpp
-    src/shader.hpp
-    src/shader.cpp
-    src/utils.hpp
+)
 
+set(IMGUI_SRC
     src/imgui/imconfig.h
     src/imgui/imgui.cpp
     src/imgui/imgui.h
@@ -36,6 +32,19 @@ add_executable(${PROJ_NAME}
     src/imgui/imgui_impl_opengl3_loader.h
     src/imgui/imgui_impl_sdl2.cpp
     src/imgui/imgui_impl_sdl2.h
+)
+
+add_executable(${PROJ_NAME}
+    src/main.cpp
+    src/window.hpp
+    src/window.cpp
+    src/shader.hpp
+    src/shader.cpp
+    src/model.hpp
+    src/model.cpp
+
+    ${GLAD_SRC}
+    ${IMGUI_SRC}
 )
 
 set(LIBS pthread SDL2 OpenGL glm)
