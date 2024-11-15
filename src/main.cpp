@@ -1,10 +1,8 @@
 #include <cstdlib>
-#include <iostream>
-#include <chrono>
 
+#include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
-#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 

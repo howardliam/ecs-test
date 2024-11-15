@@ -44,10 +44,16 @@ set(IMGUI_SRC
     src/imgui/imgui_impl_sdl3.h
 )
 
+set(STB_SRC
+    src/stb/stb_image.c
+    src/stb/stb_image.h
+)
+
 add_executable(${PROJ_NAME}
     ${PROJ_SRC}
     ${GLAD_SRC}
     ${IMGUI_SRC}
+    ${STB_SRC}
 )
 
 set(LIBS pthread SDL3::SDL3 OpenGL glm)

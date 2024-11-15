@@ -1,11 +1,11 @@
 #include "window.hpp"
 
-#include <SDL3/SDL_events.h>
-#include <SDL3/SDL_scancode.h>
 #include <cstdlib>
 #include <iostream>
 
 #include <SDL3/SDL_video.h>
+#include <SDL3/SDL_events.h>
+#include <SDL3/SDL_scancode.h>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
