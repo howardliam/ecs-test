@@ -1,16 +1,20 @@
 #include "window.hpp"
 
+#include <SDL2/SDL_render.h>
+#include <SDL2/SDL_surface.h>
 #include <cstdlib>
 #include <iostream>
 
 #include <SDL3/SDL_video.h>
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_scancode.h>
+#include <SDL3/SDL_surface.h>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl3.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "stb/stb_image.h"
 
 Window::Window(int width, int height, const char *title) : width{width}, height{height}, title{title} {
     initialise_sdl();
@@ -105,6 +109,14 @@ void Window::setup_window() {
         exit(1);
     }
     SDL_SetWindowPosition(window, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED);
+
+    int width, height, channels;
+    unsigned char *image_data = stbi_load("assets/textures/icon.png", &width, &height, &channels, 4);
+
+    SDL_Surface *surface = SDL_CreateSurfaceFrom(width, height, SDL_PIXELFORMAT_RGBA32, image_data, width * 4);
+    SDL_SetWindowIcon(window, surface);
+
+    stbi_image_free(image_data);
 }
 
 void Window::setup_opengl() {
