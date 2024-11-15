@@ -33,26 +33,6 @@ ShaderProgram::~ShaderProgram() {
     glDeleteProgram(shader_program);
 }
 
-void ShaderProgram::bind() {
-    glUseProgram(shader_program);
-}
-
-void ShaderProgram::unbind() {
-    glUseProgram(0);
-}
-
-void ShaderProgram::load_projection_matrix(glm::mat4 matrix) {
-    load_matrix(matrix, "projection_matrix");
-}
-
-void ShaderProgram::load_view_matrix(glm::mat4 matrix) {
-    load_matrix(matrix, "view_matrix");
-}
-
-void ShaderProgram::load_model_matrix(glm::mat4 matrix) {
-    load_matrix(matrix, "model_matrix");
-}
-
 GLuint ShaderProgram::create_shader(GLenum shader_type, const char *path) {
     auto code = load_shader(path);
     auto data = code.data();

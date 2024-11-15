@@ -10,12 +10,12 @@ public:
     ShaderProgram(const char *vertexPath, const char *fragmentPath);
     ~ShaderProgram();
 
-    void bind();
-    void unbind();
+    void bind() { glUseProgram(shader_program); }
+    void unbind() { glUseProgram(0); }
 
-    void load_projection_matrix(glm::mat4 matrix);
-    void load_view_matrix(glm::mat4 matrix);
-    void load_model_matrix(glm::mat4 matrix);
+    void load_projection_matrix(glm::mat4 matrix) { load_matrix(matrix, "projection_matrix"); }
+    void load_view_matrix(glm::mat4 matrix) { load_matrix(matrix, "view_matrix"); }
+    void load_model_matrix(glm::mat4 matrix) { load_matrix(matrix, "model_matrix"); }
 private:
     GLuint vertex_shader;
     GLuint fragment_shader;
