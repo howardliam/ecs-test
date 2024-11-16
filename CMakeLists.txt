@@ -18,6 +18,8 @@ set(PROJ_SRC
     src/shader.cpp
     src/model.hpp
     src/model.cpp
+    src/texture.hpp
+    src/texture.cpp
 )
 
 set(GLAD_SRC

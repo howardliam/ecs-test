@@ -10,8 +10,8 @@
 
 struct Vertex {
     glm::vec3 position{0.0f};
-    glm::vec3 colour{0.0f};
-    // glm::vec2 tex_coord;
+    // glm::vec3 colour{0.0f};
+    glm::vec2 tex_coord{0.0f};
 };
 
 class Model {

@@ -3,7 +3,6 @@
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
 
 #include "glad/gl.h"
@@ -11,17 +10,25 @@
 #include "shader.hpp"
 #include "window.hpp"
 #include "model.hpp"
+#include "texture.hpp"
 
 int main() {
     Window window{1600, 900, "Test Window"};
 
     ShaderProgram shader{"assets/shaders/shader.vert", "assets/shaders/shader.frag"};
 
+    // std::vector<Vertex> vertices{
+    //     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
+    //     {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
+    //     {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
+    //     {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+    // };
+
     std::vector<Vertex> vertices{
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-        {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-        {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-        {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
+        {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}}, // bot left
+        {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}, // bot right
+        {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}}, // top right
+        {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}, // top left
     };
 
     std::vector<GLushort> indices{
@@ -30,6 +37,8 @@ int main() {
     };
 
     Model shape{vertices, indices, shader};
+
+    Texture texture{"assets/textures/stone.png"};
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -53,9 +62,9 @@ int main() {
         model = glm::rotate(model, glm::radians(1.0f), {1.0f, 1.0f, 1.0f});
         shader.load_model_matrix(model);
 
+        texture.bind();
         shape.draw();
-
-
+        texture.unbind();
 
         window.end();
     }
