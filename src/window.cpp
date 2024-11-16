@@ -1,7 +1,5 @@
 #include "window.hpp"
 
-#include <SDL2/SDL_render.h>
-#include <SDL2/SDL_surface.h>
 #include <cstdlib>
 #include <iostream>
 
@@ -37,6 +35,7 @@ Window::~Window() {
 }
 
 void Window::poll_events() {
+    keys_pressed.clear();
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         ImGui_ImplSDL3_ProcessEvent(&event);
@@ -50,12 +49,7 @@ void Window::poll_events() {
             width = newWidth;
             height = newHeight;
         } else if (event.type == SDL_EVENT_KEY_DOWN) {
-            if (event.key.scancode == SDL_SCANCODE_ESCAPE) {
-                open = false;
-                break;
-            } else if (event.key.scancode == SDL_SCANCODE_F3) {
-                show_debug_info = !show_debug_info;
-            }
+            keys_pressed.push_back(event.key.scancode);
         }
     }
 }

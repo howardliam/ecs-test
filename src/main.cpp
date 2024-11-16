@@ -1,9 +1,11 @@
+#include <SDL3/SDL_scancode.h>
 #include <cstdlib>
 
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
+#include <SDL3/SDL_video.h>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
@@ -45,11 +47,25 @@ int main() {
     glm::mat4 model(1.0f);
     model = glm::translate(model, {0.0f, 0.0f, -5.0f});
 
+    bool display_debug_info{true};
+
     while(window.is_open()) {
         window.poll_events();
         window.begin();
 
-        if (window.display_debug_info()) {
+        if (window.is_key_down(SDL_SCANCODE_ESCAPE)) {
+            window.set_window_to_close();
+        }
+
+        if (window.is_key_down(SDL_SCANCODE_F11)) {
+            window.toggle_fullscreen();
+        }
+
+        if (window.is_key_down(SDL_SCANCODE_F3)) {
+            display_debug_info = !display_debug_info;
+        }
+
+        if (display_debug_info) {
             ImGui::Begin("Debug (F3 to toggle)", nullptr, ImGuiWindowFlags_NoCollapse);
             ImGui::Text("FPS: %f", window.get_fps());
             ImGui::Text("Frame time: %f", window.get_frame_time());

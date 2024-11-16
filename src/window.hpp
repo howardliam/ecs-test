@@ -3,8 +3,11 @@
 
 #include <string>
 #include <chrono>
+#include <vector>
+#include <algorithm>
 
 #include <SDL3/SDL.h>
+#include <SDL3/SDL_scancode.h>
 
 class Window {
 public:
@@ -23,29 +26,40 @@ public:
         SDL_SetWindowTitle(window, title.c_str());
     }
 
-    bool is_open() { return open; }
-
     SDL_Window *get_window() { return window; }
     SDL_GLContext get_context() { return context; }
+    void toggle_fullscreen() {
+        fullscreen = !fullscreen;
+        SDL_SetWindowFullscreen(window, fullscreen);
+    }
+
+    bool is_open() { return open; }
+    void set_window_to_close() { open = false; }
 
     float get_frame_time() { return frame_time; }
     float get_fps() { return 1.0f / frame_time; }
 
-    bool display_debug_info() { return show_debug_info; }
+    bool is_key_down(SDL_Scancode key) {
+        if (std::find(keys_pressed.begin(), keys_pressed.end(), key) != keys_pressed.end()) {
+            return true;
+        }
+        return false;
+    }
 private:
     int width;
     int height;
     std::string title;
 
-    bool open{true};
-
     SDL_Window *window;
     SDL_GLContext context;
+    bool fullscreen{false};
+
+    bool open{true};
 
     std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
     float frame_time;
 
-    bool show_debug_info{true};
+    std::vector<int> keys_pressed{};
 
     void initialise_sdl();
     void set_attributes();
