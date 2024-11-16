@@ -3,8 +3,7 @@
 
 #include <string>
 #include <chrono>
-#include <vector>
-#include <algorithm>
+#include <set>
 
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_scancode.h>
@@ -40,7 +39,7 @@ public:
     float get_fps() { return 1.0f / frame_time; }
 
     bool is_key_down(SDL_Scancode key) {
-        if (std::find(keys_pressed.begin(), keys_pressed.end(), key) != keys_pressed.end()) {
+        if (keys_pressed.find(key) != keys_pressed.end()) {
             return true;
         }
         return false;
@@ -59,7 +58,7 @@ private:
     std::chrono::time_point<std::chrono::high_resolution_clock> current_time;
     float frame_time;
 
-    std::vector<int> keys_pressed{};
+    std::set<int> keys_pressed{};
 
     void initialise_sdl();
     void set_attributes();

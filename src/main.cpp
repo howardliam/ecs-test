@@ -1,11 +1,13 @@
-#include <SDL3/SDL_scancode.h>
 #include <cstdlib>
+#include <cmath>
 
 #include <glm/glm.hpp>
 #include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/trigonometric.hpp>
+
 #include <SDL3/SDL_video.h>
+#include <SDL3/SDL_scancode.h>
 
 #include "glad/gl.h"
 #include "imgui/imgui.h"
@@ -18,13 +20,6 @@ int main() {
     Window window{1600, 900, "Test Window"};
 
     ShaderProgram shader{"assets/shaders/shader.vert", "assets/shaders/shader.frag"};
-
-    // std::vector<Vertex> vertices{
-    //     {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-    //     {{0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-    //     {{0.5f, 0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}},
-    //     {{-0.5f, 0.5f, 0.0f}, {1.0f, 1.0f, 1.0f}},
-    // };
 
     std::vector<Vertex> vertices{
         {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}}, // bot left
@@ -40,7 +35,7 @@ int main() {
 
     Model shape{vertices, indices, shader};
 
-    Texture texture{"assets/textures/stone.png"};
+    Texture texture{"assets/textures/test_texture.png"};
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -66,9 +61,9 @@ int main() {
         }
 
         if (display_debug_info) {
-            ImGui::Begin("Debug (F3 to toggle)", nullptr, ImGuiWindowFlags_NoCollapse);
-            ImGui::Text("FPS: %f", window.get_fps());
-            ImGui::Text("Frame time: %f", window.get_frame_time());
+            ImGui::Begin("Debug (F3 to toggle)", &display_debug_info, ImGuiWindowFlags_NoCollapse);
+            ImGui::Text("%d FPS", static_cast<int>(window.get_fps()));
+            ImGui::Text("%f ms per frame", window.get_frame_time() * 1000);
             ImGui::End();
         }
 

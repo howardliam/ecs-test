@@ -9,9 +9,12 @@
 #include <SDL3/SDL_surface.h>
 
 #include "glad/gl.h"
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_sdl3.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/implot.h"
+
 #include "stb/stb_image.h"
 
 Window::Window(int width, int height, const char *title) : width{width}, height{height}, title{title} {
@@ -27,6 +30,7 @@ Window::Window(int width, int height, const char *title) : width{width}, height{
 Window::~Window() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplSDL3_Shutdown();
+    ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     SDL_GL_DestroyContext(context);
@@ -49,7 +53,7 @@ void Window::poll_events() {
             width = newWidth;
             height = newHeight;
         } else if (event.type == SDL_EVENT_KEY_DOWN) {
-            keys_pressed.push_back(event.key.scancode);
+            keys_pressed.insert(event.key.scancode);
         }
     }
 }
@@ -130,6 +134,7 @@ void Window::setup_opengl() {
 void Window::setup_imgui() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;

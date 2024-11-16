@@ -36,14 +36,20 @@ set(IMGUI_SRC
     src/imgui/imgui_internal.h
     src/imgui/imgui_tables.cpp
     src/imgui/imgui_widgets.cpp
-    src/imgui/imstb_rectpack.h
-    src/imgui/imstb_textedit.h
-    src/imgui/imstb_truetype.h
     src/imgui/imgui_impl_opengl3.cpp
     src/imgui/imgui_impl_opengl3.h
     src/imgui/imgui_impl_opengl3_loader.h
     src/imgui/imgui_impl_sdl3.cpp
     src/imgui/imgui_impl_sdl3.h
+    src/imgui/imstb_rectpack.h
+    src/imgui/imstb_textedit.h
+    src/imgui/imstb_truetype.h
+
+    src/imgui/implot.cpp
+    src/imgui/implot.h
+    src/imgui/implot_demo.cpp
+    src/imgui/implot_internal.h
+    src/imgui/implot_items.cpp
 )
 
 set(STB_SRC
