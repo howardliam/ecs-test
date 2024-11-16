@@ -15,36 +15,67 @@
 #include "window.hpp"
 #include "model.hpp"
 #include "texture.hpp"
+#include "framebuffer.hpp"
+
+#define WIDTH 1600
+#define HEIGHT 900
 
 int main() {
-    Window window{1600, 900, "Test Window"};
+    Window window{WIDTH, HEIGHT, "Test Window"};
 
     ShaderProgram shader{"assets/shaders/shader.vert", "assets/shaders/shader.frag"};
-
     std::vector<Vertex> vertices{
         {{-0.5f, -0.5f, 0.0f}, {0.0f, 0.0f}}, // bot left
         {{0.5f, -0.5f, 0.0f}, {1.0f, 0.0f}}, // bot right
         {{0.5f, 0.5f, 0.0f}, {1.0f, 1.0f}}, // top right
         {{-0.5f, 0.5f, 0.0f}, {0.0f, 1.0f}}, // top left
     };
-
     std::vector<GLushort> indices{
         0, 1, 2,
         2, 3, 0,
     };
-
     Model shape{vertices, indices, shader};
+
+#define USE_FRAMEBUFFER
+
+#ifdef USE_FRAMEBUFFER
+    ShaderProgram fb_shader{"assets/shaders/framebuffer.vert", "assets/shaders/framebuffer.frag"};
+    std::vector<Vertex> fb_vertices{
+        {{-1.0f, -1.0f, 0.0f}, {0.0f, 0.0f}},
+        {{1.0f, -1.0f, 0.0f}, {1.0f, 0.0f}},
+        {{1.0f, 1.0f, 0.0f}, {1.0f, 1.0f}},
+        {{-1.0f, 1.0f, 0.0f}, {0.0f, 1.0f}},
+    };
+    std::vector<GLushort> fb_indices{
+        0, 1, 2,
+        2, 3, 0,
+    };
+    Model fb_rect{vertices, indices, fb_shader};
+
+    int fb_width, fb_height;
+    SDL_GetWindowSizeInPixels(window.get_window(), &fb_width, &fb_height);
+
+    Framebuffer framebuffer{fb_width, fb_height};
+#endif
+
+
 
     Texture texture{"assets/textures/test_texture.png"};
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     glm::mat4 model(1.0f);
-    model = glm::translate(model, {0.0f, 0.0f, -5.0f});
+    model = glm::translate(model, {0.0f, 0.0f, -1.0f});
 
     bool display_debug_info{true};
 
     while(window.is_open()) {
+#ifdef USE_FRAMEBUFFER
+        framebuffer.bind();
+        glEnable(GL_DEPTH_TEST);
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+#endif
+
         window.poll_events();
         window.begin();
 
@@ -67,7 +98,7 @@ int main() {
             ImGui::End();
         }
 
-        glm::mat4 projection = glm::perspective(glm::radians(45.0f), window.get_aspect_ratio(), 0.01f, 100.0f);
+        glm::mat4 projection = glm::perspective(glm::radians(45.0f), window.get_aspect_ratio(), 0.001f, 100.0f);
         shader.load_projection_matrix(projection);
 
         model = glm::rotate(model, glm::radians(1.0f), {1.0f, 1.0f, 1.0f});
@@ -76,6 +107,14 @@ int main() {
         texture.bind();
         shape.draw();
         texture.unbind();
+
+#ifdef USE_FRAMEBUFFER
+        framebuffer.unbind();
+        glDisable(GL_DEPTH_TEST);
+        framebuffer.bind_texture();
+        fb_rect.draw();
+        framebuffer.unbind_texture();
+#endif
 
         window.end();
     }

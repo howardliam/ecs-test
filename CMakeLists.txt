@@ -20,6 +20,8 @@ set(PROJ_SRC
     src/model.cpp
     src/texture.hpp
     src/texture.cpp
+    src/framebuffer.hpp
+    src/framebuffer.cpp
 )
 
 set(GLAD_SRC
